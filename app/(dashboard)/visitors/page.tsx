@@ -8,12 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const dynamic = 'force-dynamic';
 
-async function getVisitors(searchParams: { [key: string]: string | undefined }) {
+async function getVisitors(searchParams: { [key: string]: string | undefined } | Promise<{ [key: string]: string | undefined }>) {
     await dbConnect();
 
-    const search = searchParams.search;
-    const from = searchParams.from;
-    const to = searchParams.to;
+    const resolvedSearchParams = await searchParams; // Ensure searchParams is resolved
+
+    const search = resolvedSearchParams.search;
+    const from = resolvedSearchParams.from;
+    const to = resolvedSearchParams.to;
 
     let query: any = {};
 
